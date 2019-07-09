@@ -27,7 +27,8 @@ class AccountInvoice(models.Model):
         self.env['ir.attachment'].search([
             ('res_model', '=', self._name),
             ('res_id', '=', self.id),
-            ('name', 'ilike', 'Fac')
+            ('name', 'like', 'Fac'),
+            ('name', 'not like', 'pago')
         ]).unlink()
         # End modification
         return {
