@@ -24,11 +24,21 @@ class AccountInvoice(models.Model):
             force_email=True
         )
         # Begin modification
-        self.env['ir.attachment'].search([
+        attachments = env['ir.attachment']
+        attachs = attachments.search([
             ('res_model', '=', self._name),
-            ('res_id', '=', self.id),
-            ('name', 'like', 'Fac%')
-        ]).unlink()
+            ('res_id', '=', self.id)])
+        name = ''
+        for attach in attachs:
+            name = attach.name
+            if name.upper()[:3] == 'FAC':
+                attachs.search([('id', '=', attach.id)]).unlink()
+
+        # self.env['ir.attachment'].search([
+        #     ('res_model', '=', self._name),
+        #     ('res_id', '=', self.id),
+        #     ('name', 'like', 'Fac%')
+        # ]).unlink()
         # End modification
         return {
             'name': _('Compose Email'),
