@@ -24,7 +24,7 @@ class AccountInvoice(models.Model):
             force_email=True
         )
         # Begin modification
-        attachments = env['ir.attachment']
+        attachments = self.env['ir.attachment']
         attachs = attachments.search([
             ('res_model', '=', self._name),
             ('res_id', '=', self.id)])
