@@ -21,11 +21,11 @@
 ###############################################################################
 
 {
-    'name': 'Example Override Base Function',
-    'author': 'Humanytek',
-    'website': 'https://github.com/humanytek-team/example_override_base_function',
+    'name': 'Remove Attachemnts Invoice',
+    'author': 'gflores',
+    'website': 'https://www.gruporequiez.com',
     'category': 'Example',
-    'version': '0.0.1',
+    'version': '0.0.3',
     'depends': [
         'account_accountant',
         'document',

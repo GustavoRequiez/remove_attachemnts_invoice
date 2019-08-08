@@ -1,4 +1,4 @@
-from odoo import models, api, _
+from odoo import models, api, exceptions, _
 
 
 class AccountInvoice(models.Model):
@@ -9,7 +9,8 @@ class AccountInvoice(models.Model):
         """ Open a window to compose an email, with the edi invoice template
             message loaded by default
         """
-        self.ensure_one()
+
+        # self.ensure_one()
         template = self.env.ref('account.email_template_edi_invoice', False)
         compose_form = self.env.ref(
             'mail.email_compose_message_wizard_form', False)
@@ -23,23 +24,47 @@ class AccountInvoice(models.Model):
             custom_layout="account.mail_template_data_notification_email_account_invoice",
             force_email=True
         )
+
         # Begin modification
-        attachments = self.env['ir.attachment']
-        attachs = attachments.search([
-            ('res_model', '=', self._name),
-            ('res_id', '=', self.id)])
         name = ''
+        band = False
+        attachments = self.env['ir.attachment']
+        attachs = attachments.search(
+            [('res_model', '=', self._name), ('res_id', '=', self.id)])
+        print(attachs)
         for attach in attachs:
             name = attach.name
             if name.upper()[:3] == 'FAC':
-                attachs.search([('id', '=', attach.id)]).unlink()
-
-        # self.env['ir.attachment'].search([
-        #     ('res_model', '=', self._name),
-        #     ('res_id', '=', self.id),
-        #     ('name', 'like', 'Fac%')
-        # ]).unlink()
+                if name[-3:] == 'xml':
+                    if band == False:
+                        band = True
+                    else:
+                        # text+='----->'+name+'\n'
+                        # contador=contador+1
+                        attachments.search([('id', '=', attach.id)]).unlink()
+                else:
+                    # text+='----->'+name+'\n'
+                    # contador=contador+1
+                    attachments.search([('id', '=', attach.id)]).unlink()
+            elif name[-3:] == 'xml':
+                if band == False:
+                    band = True
+                else:
+                    # text+='----->'+name+'\n'
+                    # contador=contador+1
+                    attachments.search([('id', '=', attach.id)]).unlink()
+        # for attach in attachs:
+        #     name = attach.name
+        #     if name.upper()[:3] == 'FAC':
+        #         if name[-3:] == 'xml':
+        #             if band == False:
+        #                 band = True
+        #             else:
+        #                 attachs.search([('id', '=', attach.id)]).unlink()
+        #         else:
+        #             attachs.search([('id', '=', attach.id)]).unlink()
         # End modification
+
         return {
             'name': _('Compose Email'),
             'type': 'ir.actions.act_window',
