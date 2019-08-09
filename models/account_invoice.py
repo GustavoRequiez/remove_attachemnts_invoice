@@ -31,7 +31,6 @@ class AccountInvoice(models.Model):
         attachments = self.env['ir.attachment']
         attachs = attachments.search(
             [('res_model', '=', self._name), ('res_id', '=', self.id)])
-        print(attachs)
         for attach in attachs:
             name = attach.name
             if name.upper()[:3] == 'FAC':
@@ -39,31 +38,14 @@ class AccountInvoice(models.Model):
                     if band == False:
                         band = True
                     else:
-                        # text+='----->'+name+'\n'
-                        # contador=contador+1
                         attachments.search([('id', '=', attach.id)]).unlink()
                 else:
-                    # text+='----->'+name+'\n'
-                    # contador=contador+1
                     attachments.search([('id', '=', attach.id)]).unlink()
             elif name[-3:] == 'xml':
                 if band == False:
                     band = True
                 else:
-                    # text+='----->'+name+'\n'
-                    # contador=contador+1
                     attachments.search([('id', '=', attach.id)]).unlink()
-        # for attach in attachs:
-        #     name = attach.name
-        #     if name.upper()[:3] == 'FAC':
-        #         if name[-3:] == 'xml':
-        #             if band == False:
-        #                 band = True
-        #             else:
-        #                 attachs.search([('id', '=', attach.id)]).unlink()
-        #         else:
-        #             attachs.search([('id', '=', attach.id)]).unlink()
-        # End modification
 
         return {
             'name': _('Compose Email'),
