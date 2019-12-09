@@ -25,7 +25,7 @@
     'author': 'gflores',
     'website': 'https://www.gruporequiez.com',
     'category': 'Example',
-    'version': '0.0.3',
+    'version': '12.0.0.0.1',
     'depends': [
         'account_accountant',
         'document',
