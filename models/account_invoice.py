@@ -3,6 +3,7 @@ from odoo import models, api, exceptions, _
 
 class AccountInvoice(models.Model):
     _inherit = 'account.invoice'
+    _description = "module to delete duplicate attachments when sent by email"
 
     @api.multi
     def action_invoice_sent(self):
